@@ -58,5 +58,10 @@
       hostname: "{{ instance1_public_ip }}"
       groups: mberube
 
-
-
+  - name: ping new instance
+    hosts: group01
+    vars:
+         ansible_ssh_user: "{{ user }}"
+         ansible_ssh_pass: "{{ passwd }}"
+    tasks:
+        - ping:
