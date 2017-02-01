@@ -64,5 +64,5 @@
     ansible_ssh_user: "{{ user }}"
     ansible_ssh_pass: "{{ passwd }}"
   tasks: 
-    ping:
+    - ping:
             remote_user: "{{ user }}"
