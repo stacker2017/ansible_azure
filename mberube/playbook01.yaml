@@ -1,0 +1,46 @@
+---
+- name: create Azure instance
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: Azure init
+    azure_rm_virtualmachine:
+        resource_group: mberube
+        name: "{{ instance_name }}"
+        admin_username: "{{ user }}"
+        admin_password: "{{ passwd }}"
+        ssh_password_enabled: true
+        image:
+          offer: RHEL
+          publisher: RedHat
+          sku: '7.3'
+          version: latest
+    register: instance1
+
+  - name: Open port
+    azure_rm_securitygroup:
+      resource_group: mberube
+      name: "{{ instance_name }}01"
+      rules:
+        - name: jboss
+          protocol: Tcp
+          destination_port_range: 8080
+          access: Allow
+          priority: 101
+          direction: Inbound
+
+  - set_fact:
+      instance1_public_ip: "{{ instance1.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+
+  - debug:
+      var: instance1_public_ip
+
+  - name: Add new instance in Ansible's inventory
+    add_host:
+      hostname: "{{ instance1_public_ip }}"
+      groups: mberube
+
+
+
