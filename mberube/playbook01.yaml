@@ -5,7 +5,7 @@
   gather_facts: false
   vars: 
     vm_net: vmnetwork 
-  
+    pub_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDT6zRINa7VVUBsCEwdf51rg6DAdIYfuelg0Z/T+8exZ/AFESXG1LvCcPLFyqchNzYNB65NDZ5+uKxfC5r/WZZUrXHyBsUCB5jgkUM3MF2QPm8d0Kz01lMP2fp19Nym9CwqTfCtNCuNfLAr2avPoopJe7srFunW9TA0Ja6mVwQKzHruHLCaKUvxCcCRBFkd2lqJ/A8s5MoZZmjychcDCOCj1w8tZj/fPVkyWClWlZ06Fo1BLVfPQ/g5xxRJQohJBevwsnnzR/mWkG/CQ/yR72W0y9qrtkNToKh6lRlqtsEykyQEOfN+RX/56yRkasK6oQc4/aCC+fvCnjGYSoyAMUeL tower@tower
   tasks: 
   - name: Create a virtual network
     azure_rm_virtualnetwork:
@@ -28,6 +28,9 @@
         admin_username: "{{ user }}"
         admin_password: "{{ passwd }}"
         ssh_password_enabled: true
+        ssh_public_keys:
+          - path: /home/{{ user }}/.ssh/authorized_keys
+            key_data: "{{ pub_key }}"
         image:
           offer: RHEL
           publisher: RedHat
