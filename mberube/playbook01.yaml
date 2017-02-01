@@ -10,7 +10,7 @@
   - name: Create a virtual network
     azure_rm_virtualnetwork:
       name: "{{ vm_net }}"
-      resource_group: mlessard
+      resource_group: mberube
       address_prefixes_cidr:
           - "10.1.0.0/16"
   
@@ -18,10 +18,8 @@
     azure_rm_subnet:
       name: vmsubnet
       virtual_network_name: "{{ vm_net }}"
-      resource_group: mlessard
+      resource_group: mberube
       address_prefix_cidr: "10.1.0.0/24"
-
-  
   
   - name: Azure init
     azure_rm_virtualmachine:
