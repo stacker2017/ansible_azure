@@ -56,6 +56,13 @@
   - name: Add new instance in Ansible's inventory
     add_host:
       hostname: "{{ instance1_public_ip }}"
-      groups: mberube
+      groups: launched
 
-
+  - name: ping new instance
+    hosts: launched
+    vars:
+         ansible_ssh_user: "{{ user }}"
+         ansible_ssh_pass: "{{ passwd }}"
+    tasks: 
+       ping:
+            remote_user: "{{ user }}"
