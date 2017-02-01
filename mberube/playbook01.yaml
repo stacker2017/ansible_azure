@@ -3,8 +3,26 @@
   hosts: localhost
   connection: local
   gather_facts: false
+  vars: 
+    vm_net: vmnetwork 
+  
+  tasks: 
+  - name: Create a virtual network
+    azure_rm_virtualnetwork:
+      name: "{{ vm_net }}"
+      resource_group: mlessard
+      address_prefixes_cidr:
+          - "10.1.0.0/16"
+  
+  - name: Create a subnet
+    azure_rm_subnet:
+      name: vmsubnet
+      virtual_network_name: "{{ vm_net }}"
+      resource_group: mlessard
+      address_prefix_cidr: "10.1.0.0/24"
 
-  tasks:
+  
+  
   - name: Azure init
     azure_rm_virtualmachine:
         resource_group: mberube
