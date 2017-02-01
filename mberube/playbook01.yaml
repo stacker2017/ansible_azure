@@ -58,11 +58,17 @@
       hostname: "{{ instance1_public_ip }}"
       groups: launched
 
-- name: ping new instance
+- name: Install and launch apache
   hosts: launched
   vars:
     ansible_ssh_user: "{{ user }}"
     ansible_ssh_pass: "{{ passwd }}"
   tasks: 
-    - ping:
-            remote_user: "{{ user }}"
+    - name: install apache
+      yum: name=httpd state=present
+      notify: RestartApache
+  handlers: 
+    - name: RestartApache
+      service: name=httpd state=restarted enabled=yes
+
+
