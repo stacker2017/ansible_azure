@@ -67,7 +67,7 @@
     ansible_ssh_user: "{{ user }}"
   tasks: 
     - name: wait for SSH 
-      local_action: wait_for port22 hosts={{ launched }}
+      local_action: wait_for port=22 hosts={{ launched }}
 
     - name: install apache
       yum: name=httpd state=present
