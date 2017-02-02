@@ -61,8 +61,7 @@
       groups: launched
       
   - name: wait for SSH 
-    local_action: wait_for port=22 hosts={% if ansible_ssh_host is defined %}{{ ansible_ssh_host }}{% else %}{{ inventory_hostname }}{% endif %}
-
+    local_action: wait_for port=22 hosts={{ instance1_public_ip }}
     
       
 - name: Install and launch apache
