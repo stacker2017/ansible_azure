@@ -42,9 +42,9 @@
       resource_group: mberube
       name: "{{ instance_name }}01"
       rules:
-        - name: jboss
+        - name: apache
           protocol: Tcp
-          destination_port_range: 8080
+          destination_port_range: 80
           access: Allow
           priority: 101
           direction: Inbound
