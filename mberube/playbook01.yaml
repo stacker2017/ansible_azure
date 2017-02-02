@@ -60,15 +60,19 @@
       hostname: "{{ instance1_public_ip }}"
       groups: launched
       
+- name: wait for SSH
+  hosts: launched 
+  become: no 
+  tasks: 
+    - name: wait for SSH 
+      local_action: wait_for port=22 hosts={% if ansible_ssh_host is defined %}{{ ansible_ssh_host }}{% else %}{{ inventory_hostname }}{% endif %}
+      
 - name: Install and launch apache
   hosts: launched
   become: yes
   vars:
     ansible_ssh_user: "{{ user }}"
   tasks: 
-    - name: wait for SSH 
-      local_action: wait_for port=22 hosts={% if ansible_ssh_host is defined %}{{ ansible_ssh_host }}{% else %}{{ inventory_hostname }}{% endif %}
-
     - name: install apache
       yum: name=httpd state=present
       notify: RestartApache 
