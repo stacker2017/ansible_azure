@@ -59,13 +59,17 @@
     add_host:
       hostname: "{{ instance1_public_ip }}"
       groups: launched
-
+      ---
+      
 - name: Install and launch apache
   hosts: launched
   become: yes
   vars:
     ansible_ssh_user: "{{ user }}"
   tasks: 
+    - name: wait for SSH 
+      local_action: wait_for port22 hosts={{ launched }}
+
     - name: install apache
       yum: name=httpd state=present
       notify: RestartApache 
@@ -80,7 +84,6 @@ handlers:
     - name: ReloadFirewall
       shell: firewall-cmd --reload
 
-####### Configure firewall ######
 
 
 
