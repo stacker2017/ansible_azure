@@ -65,7 +65,6 @@
   become: yes
   vars:
     ansible_ssh_user: "{{ user }}"
-    ansible_ssh_pass: "{{ passwd }}"
   tasks: 
     - name: install apache
       yum: name=httpd state=present
