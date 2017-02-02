@@ -26,8 +26,7 @@
         resource_group: mberube
         name: "{{ instance_name }}"
         admin_username: "{{ user }}"
-        admin_password: "{{ passwd }}"
-        ssh_password_enabled: true
+        ssh_password_enabled: false
         ssh_public_keys:
           - path: /home/{{ user }}/.ssh/authorized_keys
             key_data: "{{ pub_key }}"
