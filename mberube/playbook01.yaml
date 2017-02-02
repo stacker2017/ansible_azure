@@ -59,7 +59,6 @@
     add_host:
       hostname: "{{ instance1_public_ip }}"
       groups: launched
-      ---
       
 - name: Install and launch apache
   hosts: launched
@@ -83,7 +82,3 @@ handlers:
       service: name=httpd state=restarted enabled=yes
     - name: ReloadFirewall
       shell: firewall-cmd --reload
-
-
-
-
