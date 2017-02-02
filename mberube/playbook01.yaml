@@ -77,7 +77,7 @@
       firewalld: zone=public port=80/tcp permanent=true state=enabled
       notify: ReloadFirewall
 
-handlers: 
+  handlers: 
     - name: RestartApache
       service: name=httpd state=restarted enabled=yes
     - name: ReloadFirewall
