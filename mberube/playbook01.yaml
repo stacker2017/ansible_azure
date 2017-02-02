@@ -67,7 +67,7 @@
     ansible_ssh_user: "{{ user }}"
   tasks: 
     - name: wait for SSH 
-      local_action: wait_for port=22 hosts={{ launched }}
+      local_action: wait_for port=22 hosts={% if ansible_ssh_host is defined %}{{ ansible_ssh_host }}{% else %}{{ inventory_hostname }}{% endif %}
 
     - name: install apache
       yum: name=httpd state=present
