@@ -68,9 +68,19 @@
   tasks: 
     - name: install apache
       yum: name=httpd state=present
-      notify: RestartApache
-  handlers: 
+      notify: RestartApache 
+      
+    - name: Open Firewall ports
+      firewalld: zone=public port=80/tcp permanent=true state=enabled
+      notify: ReloadFirewall
+
+handlers: 
     - name: RestartApache
       service: name=httpd state=restarted enabled=yes
+    - name: ReloadFirewall
+      shell: firewall-cmd --reload
+
+####### Configure firewall ######
+
 
 
