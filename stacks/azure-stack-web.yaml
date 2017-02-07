@@ -10,7 +10,7 @@
   - debug: msg="service id = {{ uuid.stdout }}"
 
   roles:
-    - { role: azure_service, service_name: "{{ uuid.stdout }}", location: "{{ location }}", state: 'present'}
+    - { role: azure_service, service_name: "{{ uuid.stdout }}", location: "eastus", state: 'present'}
     - { role: azure_vm, service_name: "{{ uuid.stdout }}", server_qty: 1, server_group: 'web' }
     - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.web }}" }
 
