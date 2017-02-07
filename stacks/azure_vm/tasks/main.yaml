@@ -6,7 +6,7 @@
     admin_username: "{{ user_id }}"
     ssh_password_enabled: false
     ssh_public_keys:
-      - path: /home/{{ user }}/.ssh/authorized_keys
+      - path: /home/{{ user_id }}/.ssh/authorized_keys
         key_data: "{{ pub_key }}"
     image:
       offer: RHEL
