@@ -2,7 +2,7 @@
 - name: Azure init
   azure_rm_virtualmachine:
     resource_group: "{{ service_name }}"
-    name: "{{ service_name }}-{{ server_group }}{{ item }}"
+    name: "{{ server_group }}{{ item }}"
     admin_username: "{{ user_id }}"
     ssh_password_enabled: false
     ssh_public_keys:
