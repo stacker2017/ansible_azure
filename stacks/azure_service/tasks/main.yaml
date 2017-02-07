@@ -1,41 +1,34 @@
----
-- name: create Azure service
-  hosts: localhost
-  connection: local
-  gather_facts: false
 
-  tasks:
+- name: Create a resource group
+  azure_rm_resourcegroup:
+    name: "{{ service_name }}"
+    location: "{{ location }}"
+    state: "{{ state }}"
+    tags:
+        user_id: "{{ user_id }}"
 
-  - name: Create a resource group
-    azure_rm_resourcegroup:
-      name: "{{ service_name }}"
-      location: "{{ location }}"
-      state: "{{ state }}"
-      tags:
-          user_id: "{{ user_id }}"
+- name: Create a virtual network
+  azure_rm_virtualnetwork:
+    name: "{{ vm_net }}"
+    resource_group: "{{ service_id }}"
+    address_prefixes_cidr:
+        - "{{ net_prefix }}"
 
-  - name: Create a virtual network
-    azure_rm_virtualnetwork:
-      name: "{{ vm_net }}"
-      resource_group: "{{ service_id }}"
-      address_prefixes_cidr:
-          - "{{ net_prefix }}"
+- name: Create a subnet
+  azure_rm_subnet:
+    name: "{{ vm_subnet }}"
+    virtual_network_name: "{{ vm_net }}"
+    resource_group: "{{ service_id }}"
+    address_prefix_cidr: "{{ subnet_prefix }}"
 
-  - name: Create a subnet
-    azure_rm_subnet:
-      name: "{{ vm_subnet }}"
-      virtual_network_name: "{{ vm_net }}"
-      resource_group: "{{ service_id }}"
-      address_prefix_cidr: "{{ subnet_prefix }}"
-
-  - name: Security groups
-    azure_rm_securitygroup:
-      resource_group: "{{ service_name }}"
-      name: "{{ service_name }}01"
-      rules:
-        - name: web service
-          protocol: Tcp
-          destination_port_range: 80
-          access: Allow
-          priority: 101
-          direction: Inbound
+- name: Security groups
+  azure_rm_securitygroup:
+    resource_group: "{{ service_name }}"
+    name: "{{ service_name }}01"
+    rules:
+      - name: web service
+        protocol: Tcp
+        destination_port_range: 80
+        access: Allow
+        priority: 101
+        direction: Inbound
