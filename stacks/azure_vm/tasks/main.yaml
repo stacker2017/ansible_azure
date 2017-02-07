@@ -18,6 +18,6 @@
 
 - name: Adding new instances to inventory
   add_host:
-    hostname: {{ server_group }}{{ item }}.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress
+    hostname: "{{ {{ server_group }}{{ item }}.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
     groups: "{{ server_group }}"
   with_sequence: count="{{ server_qty }}"
