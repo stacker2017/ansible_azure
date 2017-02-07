@@ -10,7 +10,7 @@
 - name: Create a virtual network
   azure_rm_virtualnetwork:
     name: "{{ vm_net }}"
-    resource_group: "{{ service_id }}"
+    resource_group: "{{ service_name }}"
     address_prefixes_cidr:
         - "{{ net_prefix }}"
 
@@ -18,7 +18,7 @@
   azure_rm_subnet:
     name: "{{ vm_subnet }}"
     virtual_network_name: "{{ vm_net }}"
-    resource_group: "{{ service_id }}"
+    resource_group: "{{ service_name }}"
     address_prefix_cidr: "{{ subnet_prefix }}"
 
 - name: Security groups
