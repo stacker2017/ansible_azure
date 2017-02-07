@@ -26,7 +26,7 @@
     resource_group: "{{ service_name }}"
     name: "{{ service_name }}01"
     rules:
-      - name: web service
+      - name: web_service
         protocol: Tcp
         destination_port_range: 80
         access: Allow
