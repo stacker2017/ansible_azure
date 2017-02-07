@@ -1,0 +1,30 @@
+---
+- name: create Azure instance
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+  - name: Azure init
+    azure_rm_virtualmachine:
+      resource_group: "{{ service_name }}"
+      name: "{{ service_name }}-{{ server_group }}{{ item }}"
+      admin_username: "{{ user_id }}"
+      ssh_password_enabled: false
+      ssh_public_keys:
+        - path: /home/{{ user }}/.ssh/authorized_keys
+          key_data: "{{ pub_key }}"
+      image:
+        offer: RHEL
+        publisher: RedHat
+        sku: '7.3'
+        version: latest
+    register: "{{ server_group }}{{ item }}"
+    with_sequence: count="{{ server_qty }}"
+
+  - name: Adding new instances to inventory
+    add_host:
+      hostname: "{{ server_group}}{{ item }}.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+      groups: "{{ server_group }}"
+    with_sequence: count="{{ server_qty }}"

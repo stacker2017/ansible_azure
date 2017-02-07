@@ -1,0 +1,28 @@
+
+- hosts: localhost
+  gather_facts: no
+
+  pre_tasks:
+  - name: Generate service id
+    command: uuidgen
+    register: uuid
+
+  - debug: msg="service id = {{ uuid.stdout }}"
+
+  roles:
+    - { role: os_server, service_id: "{{ uuid.stdout }}", server_qty: 3, server_image: 'centos7', server_flavor: 'm1.tiny', server_group: 'web' }
+    - { role: os_server, service_id: "{{ uuid.stdout }}", server_qty: 1, server_image: 'centos7', server_flavor: 'm1.tiny', server_group: 'db' }
+    - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.web }}" }
+    - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.db }}" }
+ 
+- hosts: web
+  roles:
+    - common
+    - apache
+
+- hosts: db
+  roles:
+    - common
+
+    
+

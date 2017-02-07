@@ -1,0 +1,7 @@
+---
+# defaults file for instance
+
+server_flavor: m1.tiny
+server_securitygroups: "default"
+server_autoip: yes
+server_group: all

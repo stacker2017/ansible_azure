@@ -1,0 +1,4 @@
+---
+# vars file for instance
+  config_file: "{{ lookup('env', 'OS_CLIENT_CONFIG_FILE') }}"
+  server_id: 0

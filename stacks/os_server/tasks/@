@@ -1,0 +1,56 @@
+---
+# tasks file for instance
+
+i- name: Launch a nova instance
+  hosts: localhost
+  gather_facts: no
+  vars:
+    config_file: "{{ lookup('env', 'OS_CLIENT_CONFIG_FILE') }}"
+  tasks:
+
+    - stat: path="{{ config_file }}"
+      register: st
+    - include_vars: "{{ config_file }}"
+      when: st.stat.exists and st.stat.isreg
+#   - name: "Print out clouds variable"
+#     debug: msg="{{ clouds|default('No clouds found') }}"
+
+    - name: generate service id
+      command: uuidgen
+      register: service_id
+
+    - name: generate instance id
+      command: uuidgen
+      register: instance_id
+
+    - name: launch an instance
+      os_server:
+        state: present
+        auth:
+          auth_url: "{{ clouds.devstack.auth.auth_url }}"
+          username: "{{ clouds.devstack.auth.username }}"
+          password: "{{ clouds.devstack.auth.password }}"
+          project_name: "{{ clouds.devstack.auth.project_name }}"
+        name: "{{ instance_id.stdout }}"
+        image: centos7
+        flavor: m1.tiny
+        security_groups: "default,web"
+        auto_ip: yes
+        meta: "service_id={{ service_id.stdout }}"
+      register: os_instance
+
+    - name: Add new instance in Ansible's inventory
+      add_host:
+        hostname: "{{ os_instance.openstack.accessIPv4 }}"
+        groups: webservers 
+
+#    - debug: var=hostvars[inventory_hostname]
+
+    - name: Wait for SSH to come up
+      wait_for:
+        host: "{{ item }}"
+        port: 22
+        delay: 60
+        timeout: 320
+        state: started
+      with_items: "{{ hostvars[inventory_hostname].groups.webservers }}"

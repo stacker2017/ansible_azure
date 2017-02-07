@@ -1,0 +1,32 @@
+---
+# tasks file for instance
+
+- include_vars: "{{ config_file }}"
+
+
+- name: launch an instance
+  os_server:
+    state: present
+    auth:
+      auth_url: "{{ clouds.devstack.auth.auth_url }}"
+      username: "{{ clouds.devstack.auth.username }}"
+      password: "{{ clouds.devstack.auth.password }}"
+      project_name: "{{ clouds.devstack.auth.project_name }}"
+    name: "{{ service_id}}-{{ server_group }}{{ item }}"
+    image: "{{ server_image }}" 
+    flavor: "{{ server_flavor }}"
+    security_groups: "{{ server_securitygroups }}"
+    auto_ip: "{{ server_autoip }}"
+    meta: "service_id={{ service_id }}"
+  register: "{{ server_group }}{{ item }}"
+  with_sequence: count="{{ server_qty }}"
+
+- name: Add new instance in Ansible's inventory
+  add_host:
+    hostname: "{{ server_group}}{{ item }}.openstack.accessIPv4 }}"
+    groups: "{{ server_group }}"
+  with_sequence: count="{{ server_qty }}"
+
+
+
+
