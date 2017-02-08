@@ -20,17 +20,17 @@
 - name: Show hostvars[inventory_hostname]
   debug: var=hostvars
 
+- name: Show ansible_ssh_host variable in hostvars
+  debug: var=vm
+
+- name: Adding new instances to inventory
+  add_host:
+    hostname: "{{ vm.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    groups: "{{ item.group }}"
+  with_items: "{{ vm.results }}"
+
 - name: Show group_names
   debug: var=group_names
 
 - name: Show groups
   debug: var=groups
-
-- name: Show ansible_ssh_host variable in hostvars
-  debug: var=hostvars[{{ server_group }}{{ item }}]
-
-- name: Adding new instances to inventory
-  add_host:
-    hostname: "{{ {{ server_group }}{{ item }}.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
-    groups: "{{ server_group }}"
-  with_sequence: count="{{ server_qty }}"
