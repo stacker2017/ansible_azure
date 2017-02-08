@@ -13,7 +13,7 @@
       publisher: RedHat
       sku: '7.3'
       version: latest
-  register: "{{ server_group }}{{ item }}"
+  register: vm
   with_sequence: count="{{ server_qty }}"
 
 
