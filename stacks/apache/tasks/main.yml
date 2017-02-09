@@ -22,4 +22,5 @@
   git:
     repo: "{{ gitrepo }}"
     dest: /var/www/html
+    force: yes
   ignore_errors: yes
