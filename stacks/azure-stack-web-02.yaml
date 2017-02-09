@@ -1,0 +1,13 @@
+
+- hosts: localhost
+  gather_facts: no
+
+  roles:
+    - { role: azure_service, service_name: "{{ service_id }}", location: "eastus", state: 'present'}
+    - { role: azure_vm, service_name: "{{ service_id }}", server_qty: "{{ web_qty }}", server_group: 'web' }
+    - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.web }}" }
+
+- hosts: web
+  roles:
+    - common
+    - apache
