@@ -13,6 +13,9 @@
       publisher: RedHat
       sku: '7.3'
       version: latest
+  open_ports:
+    - 22
+    - 80
   register: vm
   with_sequence: count="{{ server_qty }}"
 
