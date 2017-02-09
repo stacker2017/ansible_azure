@@ -17,3 +17,7 @@
     enabled: yes
     name: httpd
 
+- name: install web files
+  git:
+    repo: "{{ gitrepo }}"
+    dest: /var/www/html
