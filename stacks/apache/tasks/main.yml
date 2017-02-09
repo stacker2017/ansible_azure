@@ -10,6 +10,7 @@
   - php
   - php-mysql
   - php-gd
+  - git
 
 - name: enable httpd service
   service:
