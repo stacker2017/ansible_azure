@@ -8,6 +8,7 @@
     - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.web }}" }
 
 - hosts: web
+  become: true
   roles:
 #    - common
     - apache
