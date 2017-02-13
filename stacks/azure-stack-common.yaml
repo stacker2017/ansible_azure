@@ -1,0 +1,12 @@
+
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - { role: azure_service, service_name: "{{ service_id }}", location: "eastus", state: 'present'}
+    - { role: azure_vm, service_name: "{{ service_id }}", server_qty: "{{ qty }}", server_group: 'common' }
+    - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.common }}" }
+
+- hosts: common
+  become: true
+  roles:
+    - { role: common }
