@@ -1,0 +1,12 @@
+################################################################################
+#
+#  DESCRIPTION: AZURE - DELETE A SERVICE
+#
+#  INPUT VARIABLES:
+#    - service_id:  unique service name identifier
+#
+################################################################################
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - { role: azure_service, service_name: "{{ service_id }}", location: "eastus", state: 'absent'}

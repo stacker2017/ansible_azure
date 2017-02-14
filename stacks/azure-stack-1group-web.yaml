@@ -1,6 +1,6 @@
 ################################################################################
 #
-#  DESCRIPTION: AZURE - PROVISION ONE GROUP OF VMs
+#  DESCRIPTION: AZURE - PROVISION ONE GROUP OF WEB SERVERS
 #
 #  INPUT VARIABLES:
 #    - service_id:  unique service name identifier
@@ -13,6 +13,7 @@
               #   version: latest
 #    - group1_vmsize:  Azure image size
 #    - group1_ports:  Azure network open ports in security group
+#    - giturl: Web content GIT URL
 #
 ################################################################################
 - hosts: localhost
@@ -26,3 +27,4 @@
   become: true
   roles:
     - { role: common }
+    - { role: apache, gitrepo: "{{ giturl }}" }
