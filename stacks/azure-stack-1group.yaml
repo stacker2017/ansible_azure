@@ -19,7 +19,7 @@
   gather_facts: no
   roles:
     - { role: azure_service, service_name: "{{ service_id }}", location: "eastus", state: 'present'}
-    - { role: azure_vm, service_name: "{{ service_id }}", server_group: 'group1', server_qty: "{{ group1_qty }}", image: {{ group1_image }}, vmsize: {{ group1_vmsize }}, open_ports: "{{ group1_ports }}" }
+    - { role: azure_vm, service_name: "{{ service_id }}", server_group: 'group1', server_qty: "{{ group1_qty }}", image: "{{ group1_image }}", vmsize: "{{ group1_vmsize }}", open_ports: "{{ group1_ports }}" }
     - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.group1 }}" }
 
 - hosts: group1
