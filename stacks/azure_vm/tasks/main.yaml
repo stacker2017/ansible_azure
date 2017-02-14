@@ -8,14 +8,9 @@
     ssh_public_keys:
       - path: /home/{{ user_id }}/.ssh/authorized_keys
         key_data: "{{ pub_key }}"
-    image:
-      offer: RHEL
-      publisher: RedHat
-      sku: '7.3'
-      version: latest
-    open_ports:
-      - 22
-      - 80
+    vm_size: "{{ vmsize }}"
+    image: "{{ image }}"
+    open_ports: "{{ open_ports }}"
   register: vm
   with_sequence: count="{{ server_qty }}"
 
