@@ -4,6 +4,7 @@
     name: "{{ service_name }}"
     location: "{{ location }}"
     state: "{{ state }}"
+    force: yes
 
 - name: Create a virtual network
   azure_rm_virtualnetwork:
