@@ -1,0 +1,39 @@
+################################################################################
+#
+#  DESCRIPTION: AZURE - PROVISION ONE GROUP OF WEB SERVERS
+#
+#  INPUT VARIABLES:
+#    - service_id:  unique service name identifier
+#    - group1_qty:  number of VMs
+#    - group1_image:  Azure image description
+              # {{ group1_image }}:
+              #   offer: RHEL
+              #   publisher: RedHat
+              #   sku: '7.3'
+              #   version: latest
+#    - group1_vmsize:  Azure image size
+#    - group1_ports:  Azure network open ports in security group
+#    - giturl: Web content GIT URL
+#
+################################################################################
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - { role: azure_service, service_name: "{{ service_id }}", location: "eastus", state: 'present'}
+    - { role: azure_vm, service_name: "{{ service_id }}", server_group: 'group1', server_qty: "{{ group1_qty }}", image: "{{ group1_image }}", vmsize: "{{ group1_vmsize }}", open_ports: "{{ group1_ports }}" }
+    - { role: azure_vm, service_name: "{{ service_id }}", server_group: 'group2', server_qty: "{{ group2_qty }}", image: "{{ group2_image }}", vmsize: "{{ group2_vmsize }}", open_ports: "{{ group2_ports }}" }
+    - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.group1 }}" }
+    - { role: sshwait, server_group: "{{ hostvars[inventory_hostname].groups.group2 }}" }
+
+
+- hosts: group1
+  become: true
+  roles:
+    - { role: common }
+    - { role: apache, gitrepo: "{{ giturl }}" }
+
+- hosts: group2
+  become: true
+  roles:
+    - { role: common }
+    - { role: mariadb }

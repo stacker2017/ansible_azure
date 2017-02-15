@@ -1,0 +1,26 @@
+---
+# tasks file for apache
+
+- name: install required packages
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+  - httpd
+  - php
+  - php-mysql
+  - php-gd
+  - git
+
+- name: enable httpd service
+  service:
+    state: started
+    enabled: yes
+    name: httpd
+
+- name: install web files
+  git:
+    repo: "{{ gitrepo }}"
+    dest: /var/www/html
+    force: yes
+  ignore_errors: yes
