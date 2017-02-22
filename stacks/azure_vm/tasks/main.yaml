@@ -1,7 +1,7 @@
 
 
 - name: Generate vm uuid
-  command: uuidgen
+  command: vmuuid
   register: vm_uuid
 
 - debug: msg="vm_uuid = {{ vm_uuid.stdout }}"
