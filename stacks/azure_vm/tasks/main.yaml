@@ -1,8 +1,15 @@
 
+
+- name: Generate vm uuid
+    command: uuidgen
+    register: vm_uuid
+
+- debug: msg="vm_uuid = {{ vm_uuid.stdout }}"
+
 - name: Azure init
   azure_rm_virtualmachine:
     resource_group: "{{ service_name }}"
-    name: "{{ server_group }}{{ item }}"
+    name: "{{ vm_uuid.stdout }}{{ item }}"
     admin_username: "{{ user_id }}"
     ssh_password_enabled: false
     ssh_public_keys:
