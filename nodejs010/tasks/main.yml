@@ -24,8 +24,3 @@
     dest: /var/www/html
     force: yes
   ignore_errors: yes
-
-- name: configure db ip
-  template:
-    src: dbips.txt
-    dest: /var/www/html/dbips.html
